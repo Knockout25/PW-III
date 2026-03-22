@@ -1,3 +1,3 @@
-# 💼 Portfólio 
+# 💼 PW III 
 
-Um breve portfólio puramente em html para a aula de PW III
+Repositório para as atividades da aula de PW III com o professor André.
