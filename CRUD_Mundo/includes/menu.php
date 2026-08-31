@@ -8,5 +8,11 @@
         <a href="/CRUD_Mundo/paises/listar.php"><i class="fa-solid fa-earth-americas" aria-hidden="true"></i><span>Países</span></a>
         <a href="/CRUD_Mundo/cidades/listar.php"><i class="fa-solid fa-city" aria-hidden="true"></i><span>Cidades</span></a>
         <a href="/CRUD_Mundo/governantes/listar.php"><i class="fa-solid fa-user-tie" aria-hidden="true"></i><span>Governantes</span></a>
+        <a href="/CRUD_Mundo/logs/listar.php"><i class="fa-solid fa-history" aria-hidden="true"></i><span>Logs</span></a>
     </nav>
+    <div class="user-panel">
+        <span>Olá, <?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Usuário') ?></span>
+        <a href="/CRUD_Mundo/trocar_senha.php">Trocar senha</a>
+        <a href="/CRUD_Mundo/logout.php">Sair</a>
+    </div>
 </aside>

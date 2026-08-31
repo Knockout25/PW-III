@@ -10,6 +10,12 @@ body {
   min-height: 100vh;
   padding-left: 248px;
 }
+body.auth-page {
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .container {
   width: min(1100px, 92%);
   margin: auto;
@@ -73,6 +79,25 @@ body {
   background: #1d4ed8;
   border-color: #93c5fd;
   color: white;
+}
+.user-panel {
+  margin-top: 24px;
+  border-top: 1px solid rgba(148, 163, 184, 0.25);
+  padding-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.user-panel span {
+  font-size: 14px;
+  color: #dbeafe;
+}
+.user-panel a {
+  color: #dbeafe;
+  text-decoration: none;
+}
+.user-panel a:hover {
+  color: #fff;
 }
 .nav nav {
   display: flex;
@@ -138,6 +163,74 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+.auth-shell {
+  width: min(430px, 90vw);
+}
+.auth-card {
+  background: rgba(15, 23, 42, 0.9);
+  border-radius: 18px;
+  padding: 32px 28px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.35);
+  color: white;
+}
+.auth-card h1 {
+  margin: 0 0 24px;
+  text-align: center;
+  font-size: 2rem;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.auth-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: bold;
+}
+.auth-form input {
+  border-radius: 10px;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  background: rgba(15, 23, 42, 0.35);
+  color: white;
+  padding: 12px 14px;
+  font-size: 1rem;
+}
+.auth-form input::placeholder {
+  color: #cbd5e1;
+}
+.auth-form button,
+.auth-card .btn {
+  width: 100%;
+}
+.alert {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+.alert.error {
+  background: rgba(239, 68, 68, 0.18);
+  color: #fecaca;
+  border: 1px solid rgba(248, 113, 113, 0.7);
+}
+.alert.success {
+  background: rgba(34, 197, 94, 0.18);
+  color: #bbf7d0;
+  border: 1px solid rgba(74, 222, 128, 0.7);
+}
+.form-help {
+  margin-top: 12px;
+  font-size: 0.92rem;
+  color: #dbeafe;
+  text-align: center;
+}
+.password-match {
+  color: #d1fae5;
+  font-size: 0.9rem;
+  min-height: 18px;
 }
 .page-head {
   color: white;

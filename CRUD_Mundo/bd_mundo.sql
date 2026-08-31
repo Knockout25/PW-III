@@ -1,6 +1,29 @@
 CREATE DATABASE IF NOT EXISTS bd_mundo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE bd_mundo;
 
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    login VARCHAR(50) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    primeiro_acesso TINYINT(1) NOT NULL DEFAULT 1,
+    tentativas INT NOT NULL DEFAULT 0,
+    bloqueado TINYINT(1) NOT NULL DEFAULT 0,
+    bloqueado_em DATETIME NULL DEFAULT NULL,
+    ultimo_login DATETIME NULL DEFAULT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE logs (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NULL,
+    acao VARCHAR(100) NOT NULL,
+    descricao TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_logs_usuario FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE SET NULL ON UPDATE CASCADE
+);
+
 CREATE TABLE continentes (
  id INT AUTO_INCREMENT PRIMARY KEY,
  nome VARCHAR(100) NOT NULL,
@@ -147,12 +170,16 @@ BEGIN
  UPDATE paises
  SET populacao = (SELECT COALESCE(SUM(populacao), 0) FROM cidades WHERE pais_id = NEW.pais_id)
  WHERE id = NEW.pais_id;
- UPDATE continentes
- SET populacao = (SELECT COALESCE(SUM(populacao), 0) FROM paises WHERE continente_id = OLD.continente_id)
- WHERE id = OLD.continente_id;
- UPDATE continentes
- SET populacao = (SELECT COALESCE(SUM(populacao), 0) FROM paises WHERE continente_id = NEW.continente_id)
- WHERE id = NEW.continente_id;
+
+ UPDATE continentes c
+ JOIN paises p_old ON p_old.continente_id = c.id
+ SET c.populacao = (SELECT COALESCE(SUM(populacao), 0) FROM paises WHERE continente_id = c.id)
+ WHERE p_old.id = OLD.pais_id;
+
+ UPDATE continentes c
+ JOIN paises p_new ON p_new.continente_id = c.id
+ SET c.populacao = (SELECT COALESCE(SUM(populacao), 0) FROM paises WHERE continente_id = c.id)
+ WHERE p_new.id = NEW.pais_id;
 END$$
 
 CREATE TRIGGER trg_cidades_ad
@@ -171,8 +198,22 @@ END$$
 DELIMITER ;
 
 UPDATE paises p
-SET p.populacao = (SELECT COALESCE(SUM(c.populacao), 0) FROM cidades c WHERE c.pais_id = p.id);
+SET p.populacao = (
+    SELECT COALESCE(SUM(c.populacao), 0)
+    FROM cidades c
+    WHERE c.pais_id = p.id
+)
+WHERE p.id > 0;
 
 UPDATE continentes c
-SET c.populacao = (SELECT COALESCE(SUM(p.populacao), 0) FROM paises p WHERE p.continente_id = c.id),
-	c.total_paises = (SELECT COUNT(*) FROM paises p WHERE p.continente_id = c.id);
+SET c.populacao = (
+    SELECT COALESCE(SUM(p.populacao), 0)
+    FROM paises p
+    WHERE p.continente_id = c.id
+),
+    c.total_paises = (
+        SELECT COUNT(*)
+        FROM paises p
+        WHERE p.continente_id = c.id
+    )
+WHERE c.id > 0;
